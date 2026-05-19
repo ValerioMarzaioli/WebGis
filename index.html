@@ -60,19 +60,19 @@
          return tempDiv.innerHTML;
         }
         // add class to format popup if it contains media
-		function addClassToPopupIfMedia(content, popup) {
-			var tempDiv = document.createElement('div');
-			tempDiv.innerHTML = content;
-			if (tempDiv.querySelector('td img')) {
-				popup._contentNode.classList.add('media');
-					// Delay to force the redraw
-					setTimeout(function() {
-						popup.update();
-					}, 10);
-			} else {
-				popup._contentNode.classList.remove('media');
-			}
-		}
+        function addClassToPopupIfMedia(content, popup) {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            if (tempDiv.querySelector('td img')) {
+                popup._contentNode.classList.add('media');
+                    // Delay to force the redraw
+                    setTimeout(function() {
+                        popup.update();
+                    }, 10);
+            } else {
+                popup._contentNode.classList.remove('media');
+            }
+        }
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
@@ -103,22 +103,32 @@
         });
         layer_OSMStandard_0;
         map.addLayer(layer_OSMStandard_0);
+
+        // FUNZIONE POPUP MODIFICATA
         function pop_CNTR_RG_20M_2024_4326gpkg_1(feature, layer) {
+            // Estraiamo la stringa degli autori se presente
+            var autoriFormattati = (feature.properties['Autori '] !== null ? autolinker.link(feature.properties['Autori '].toLocaleString()) : '');
+            if (autoriFormattati) {
+                // Sostituiamo il separatore ";" con il tag HTML "<br>" per andare a capo
+                autoriFormattati = autoriFormattati.replaceAll(';', '<br>');
+            }
+
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Autori </th>\
-                        <td>' + (feature.properties['Autori '] !== null ? autolinker.link(feature.properties['Autori '].toLocaleString()) : '') + '</td>\
+                        <td>' + autoriFormattati + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['Country'] !== null ? autolinker.link(feature.properties['Country'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function(e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
+
         function style_CNTR_RG_20M_2024_4326gpkg_1_0(feature) {
             var context = {
                 feature: feature,
