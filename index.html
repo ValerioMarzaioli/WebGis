@@ -110,7 +110,7 @@
             var autoriFormattati = (feature.properties['Autori '] !== null ? autolinker.link(feature.properties['Autori '].toLocaleString()) : '');
             if (autoriFormattati) {
                 // Sostituiamo il separatore "," con il tag HTML "<br>" per andare a capo
-                autoriFormattati = autoriFormattati.replaceAll(',', '<br>');
+                autoriFormattati = autoriFormattati.replaceAll(', ', '<br>');
             }
 
             var popupContent = '<table>\
