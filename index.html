@@ -104,13 +104,19 @@
         layer_OSMStandard_0;
         map.addLayer(layer_OSMStandard_0);
 
-        // FUNZIONE POPUP MODIFICATA CON LA VIRGOLA
+        // FUNZIONE POPUP AGGIORNATA CON ORDINE DELLE OPERAZIONI INVERTITO
         function pop_CNTR_RG_20M_2024_4326gpkg_1(feature, layer) {
-            // Estraiamo la stringa degli autori se presente
-            var autoriFormattati = (feature.properties['Autori '] !== null ? autolinker.link(feature.properties['Autori '].toLocaleString()) : '');
-            if (autoriFormattati) {
-                // Sostituiamo il separatore "," con il tag HTML "<br>" per andare a capo
-                autoriFormattati = autoriFormattati.replaceAll(', ', '<br>');
+            var autoriFormattati = '';
+            
+            if (feature.properties['Autori '] !== null) {
+                // 1. Prendiamo il testo grezzo dal database e lo convertiamo in stringa
+                var testoPuro = feature.properties['Autori '].toLocaleString();
+                
+                // 2. Sostituiamo le virgole (con o senza spazio) con l'a capo HTML <br>
+                var testoConAcapo = testoPuro.replaceAll(', ', '<br>').replaceAll(',', '<br>');
+                
+                // 3. Passiamo il risultato formattato ad autolinker per i link
+                autoriFormattati = autolinker.link(testConAcapo);
             }
 
             var popupContent = '<table>\
