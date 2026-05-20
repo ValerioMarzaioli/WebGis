@@ -180,18 +180,22 @@ function pop_CNTR_RG_20M_2024_4326gpkg_1(feature, layer) {
     var autori = feature.properties['Autori '];
 
     // Divide i nomi usando la virgola e li mette in colonna
-    var autoriFormattati = '';
+   var autoriFormattati = '';
 
-    if (autori !== null && autori !== undefined) {
+if (autori !== null && autori !== undefined) {
 
-        autoriFormattati = autori
-            .toLocaleString()
+    autoriFormattati = '<ul style="margin:0; padding-left:18px;">' +
+
+        autori
+            .toString()
             .split(',')
             .map(function(nome) {
-                return autolinker.link(nome.trim());
+                return '<li>' + autolinker.link(nome.trim()) + '</li>';
             })
-            .join('<br>');
-    }
+            .join('')
+
+        + '</ul>';
+}
 
     var popupContent =
         '<table>' +
